@@ -54,8 +54,8 @@
 			<h2>1. Reordering Vertices</h2>
 			<p>
 			  We were given the coordinates of the 3 vertices of the triangle. However, these weren’t ordered in the anticlockwise direction (which is important while calculating whether a point is inside or outside the triangle). 
-			  To fix this, I first calculated the cross product of the two vectors of the triangle (<code>p1 - p0</code>, <code>p2 - p0</code>). 
-			  If it was negative, I swapped <code>p0</code> and <code>p1</code>. This was done using the following calculations:
+			  To fix this, I first calculated the cross product of the two vectors of the triangle (<span class="small-bold">p1 - p0</span>, <span class="small-bold">p2 - p0</span>). 
+			  If it was negative, I swapped <span class="small-bold">p0</span> and <span class="small-bold">p1</span>. This was done using the following calculations:
 			</p>
 			<pre>
 		  if ((x1 - x0) * (y2 - y0) - (y1 - y0) * (x2 - x0) &lt; 0) { 
@@ -69,13 +69,13 @@
 			  Next, I had to calculate the tightest bounding box the triangle resided in. To do this, I calculated 4 things:
 			</p>
 			<ul>
-			  <li>Minimum x coordinate (<code>xmin</code>)</li>
-			  <li>Minimum y coordinate (<code>ymin</code>)</li>
-			  <li>Maximum x coordinate (<code>xmax</code>)</li>
-			  <li>Maximum y coordinate (<code>ymax</code>)</li>
+			  <li>Minimum x coordinate (<span class="small-bold">xmin</span>)</li>
+			  <li>Minimum y coordinate (<span class="small-bold">ymin</span>)</li>
+			  <li>Maximum x coordinate (<span class="small-bold">xmax</span>)</li>
+			  <li>Maximum y coordinate (<span class="small-bold">ymax</span>)</li>
 			</ul>
 			<p>
-			  Then, the bounding box would be the triangle residing in the rectangle with diagonal vertices (<code>xmin, ymin</code>) and (<code>xmax, ymax</code>). 
+			  Then, the bounding box would be the triangle residing in the rectangle with diagonal vertices (<span class="small-bold">xmin, ymin</span>) and (<span class="small-bold">xmax, ymax</span>). 
 			  Next, I just iterated through all points lying within the bounding box using a nested for loop, calculating whether the center of the point (using the 0.5, 0.5 offset) was within the triangle. 
 			  This was done using the line formula:
 			</p>
@@ -83,7 +83,7 @@
 		  return -(x - x0)*(y1 - y0)+(y - y0)*(x1 - x0);
 			</pre>
 			<p>
-			  If it was within the triangle, I simply filled in the pixel at value (<code>x, y</code>) to color.
+			  If it was within the triangle, I simply filled in the pixel at value (<span class="small-bold">x, y</span>) to color.
 			</p>
 		  
 			<h2>3. Bounding Box Iteration</h2>
@@ -92,6 +92,7 @@
 			  Then, I only iterate through the points that lie in this bounding box by setting my for loop conditions accordingly.
 			</p>
 		  </body>
+		  </html>
 		<figure>
 			<img src="task1.png" alt="task1" style="width:50%"/>
 			<figcaption>Triangles!</figcaption>
