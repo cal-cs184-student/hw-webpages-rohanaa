@@ -45,7 +45,36 @@
 		-->
 
 		<h2>Overview</h2>
-		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
+		<p>
+			In this assignment, we implemented a <strong>rasterizer</strong>, which involved multiple key components, from basic pixel manipulation to more advanced techniques like 
+			<em>supersampling, texture mapping, and transformations</em>.
+		</p>
+	
+		<p>
+			At a high level, the rasterizer is responsible for taking geometric primitives (like triangles) and converting them into pixel representations on the screen.
+			The major components implemented include:
+		</p>
+	
+		<ul>
+			<li><strong>Supersampling & Antialiasing</strong> – Improves image quality by averaging multiple samples per pixel to reduce jagged edges.</li>
+			<li><strong>Barycentric Coordinates & Interpolation</strong> – Used for determining how attributes like colors and textures vary across a triangle.</li>
+			<li><strong>Transformations</strong> – Enables correct positioning of objects in screen space.</li>
+			<li><strong>Texture Mapping</strong>
+				<ul>
+					<li><strong>Pixel Sampling</strong> (Nearest & Bilinear Interpolation) – Improves texture quality by refining how colors are fetched from textures.</li>
+					<li><strong>Level Sampling </strong> – Optimizes texture detail dynamically for better performance and visual quality.</li>
+				</ul>
+			</li>
+			
+		</ul>
+	
+		<h2>Interesting Learnings</h2>
+		<ul>
+			<li><strong>Antialiasing techniques like supersampling significantly enhance image quality</strong> by smoothing jagged edges, though they come with a performance cost.</li>
+			<li><strong>Interpolation methods, such as bilinear filtering, produce smoother results</strong> compared to simpler approaches like nearest-neighbor sampling, improving image quality.</li>
+			<li><strong>Barycentric coordinates provide an intuitive way to interpolate values across a surface,</strong> which can be  used for both color and texture</li>
+		</ul>
+	
 
 		<h2>Task 1: Drawing Single-Color Triangles</h2>
 			<p>
