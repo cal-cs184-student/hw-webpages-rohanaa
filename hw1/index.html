@@ -48,10 +48,7 @@
 		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
 
 		<h2>Task 1: Drawing Single-Color Triangles</h2>
-		<body>
-			<h1>Triangle Inside Check Algorithm</h1>
-		  
-			<h2>1. Reordering Vertices</h2>
+		<body>  
 			<p>
 			  We were given the coordinates of the 3 vertices of the triangle. However, these weren’t ordered in the anticlockwise direction (which is important while calculating whether a point is inside or outside the triangle). 
 			  To fix this, I first calculated the cross product of the two vectors of the triangle (<span class="small-bold">p1 - p0</span>, <span class="small-bold">p2 - p0</span>). 
@@ -63,8 +60,6 @@
 			swap(y1, y2); 
 		  }
 			</pre>
-		  
-			<h2>2. Tight Bounding Box Calculation</h2>
 			<p>
 			  Next, I had to calculate the tightest bounding box the triangle resided in. To do this, I calculated 4 things:
 			</p>
@@ -85,14 +80,11 @@
 			<p>
 			  If it was within the triangle, I simply filled in the pixel at value (<span class="small-bold">x, y</span>) to color.
 			</p>
-		  
-			<h2>3. Bounding Box Iteration</h2>
 			<p>
 			  As mentioned above, my algorithm first calculated the tightest bounding box that fits the triangle (since all vertices lie on the edges of the bounding box). 
 			  Then, I only iterate through the points that lie in this bounding box by setting my for loop conditions accordingly.
 			</p>
 		  </body>
-		  </html>
 		<figure>
 			<img src="task1.png" alt="task1" style="width:50%"/>
 			<figcaption>Triangles!</figcaption>
@@ -100,9 +92,6 @@
 		
 		<h2>Task 2: Antialiasing by Supersampling</h2>
 		<body>
-			<h1>Supersampling Implementation</h1>
-		  
-			<h2>1. Sample Buffer Implementation</h2>
 			<p>
 			  My supersampling implementation involved using the <span class="small-bold">sample_buffer</span> directly rather than <span class="small-bold">fill_pixel</span>.
 			  I started by computing the ‘gap’ between each evenly spaced point, which I found out to be <span class="small-bold">1/(sqrt(sample_rate) + 1)</span>. 
@@ -121,20 +110,17 @@
 		  sample_buffer[(y*width + x)*sample_rate + num*(i-1) + (j-1)] = color;
 			</pre>
 		  
-			<h2>2. Algorithm and Pixel Update</h2>
 			<p>
 			  The algorithm simply goes through each sample point (through 4 for loops) as calculated above and does a check similar to task 1 to figure out whether the point is inside or outside the triangle. 
 			  Then, <span class="small-bold">sample_buffer</span> is updated. <span class="small-bold">Fill_pixel</span> had to be modified to set not just one location of <span class="small-bold">sample_buffer</span> to color, 
 			  but all samples of them (of which there are <span class="small-bold">sample_rate</span> many).
 			</p>
 		  
-			<h2>3. Resolving to Framebuffer</h2>
 			<p>
 			  In the <span class="small-bold">resolve_to_framebuffer</span> function, I calculate the final pixel color to be the average color of the <span class="small-bold">sample_rate</span> number of sample points 
 			  for that pixel in the sample buffer.
 			</p>
 		  
-			<h2>4. Effect of Supersampling</h2>
 			<p>
 			  Supersampling is really useful to remove jaggies and aliasing since we are effectively increasing the sample rate. This leads to much smoother and less pixelated images.
 			  It helped antialias the triangles by smoothing out the edges, blending them better with the white background, thereby removing jaggies and fixing pointy edges (and just edges in general) as well.
