@@ -48,7 +48,6 @@
 		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
 
 		<h2>Task 1: Drawing Single-Color Triangles</h2>
-		<body>  
 			<p>
 			  We were given the coordinates of the 3 vertices of the triangle. However, these weren’t ordered in the anticlockwise direction (which is important while calculating whether a point is inside or outside the triangle). 
 			  To fix this, I first calculated the cross product of the two vectors of the triangle (<span class="small-bold">p1 - p0</span>, <span class="small-bold">p2 - p0</span>). 
@@ -84,14 +83,12 @@
 			  As mentioned above, my algorithm first calculated the tightest bounding box that fits the triangle (since all vertices lie on the edges of the bounding box). 
 			  Then, I only iterate through the points that lie in this bounding box by setting my for loop conditions accordingly.
 			</p>
-		  </body>
 		<figure>
 			<img src="task1.png" alt="task1" style="width:50%"/>
 			<figcaption>Triangles!</figcaption>
 		</figure>
 		
 		<h2>Task 2: Antialiasing by Supersampling</h2>
-		<body>
 			<p>
 			  My supersampling implementation involved using the <span class="small-bold">sample_buffer</span> directly rather than <span class="small-bold">fill_pixel</span>.
 			  I started by computing the ‘gap’ between each evenly spaced point, which I found out to be <span class="small-bold">1/(sqrt(sample_rate) + 1)</span>. 
@@ -125,7 +122,6 @@
 			  Supersampling is really useful to remove jaggies and aliasing since we are effectively increasing the sample rate. This leads to much smoother and less pixelated images.
 			  It helped antialias the triangles by smoothing out the edges, blending them better with the white background, thereby removing jaggies and fixing pointy edges (and just edges in general) as well.
 			</p>
-		</body>
 		
 		<p>More triangles rasterized with different super sampling rates</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
