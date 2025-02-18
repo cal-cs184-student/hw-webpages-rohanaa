@@ -166,7 +166,16 @@
 		</figure>
 
 		<h2>Task 5: "Pixel sampling" for texture mapping</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<p>The task first involved converting x, y coordinates in the mesh to u, v coordinates in the texture map that we wanted. To do this, we use barycentric coordinates to interpolate the value at an x, y position within the triangle given the u, v coordinates of the vertices. With calculated u, v coordinates for the desired point (after clamping to ensure it’s between 0 and 1), calculating texel values was straightforward. </p>
+		<p>we scale our u, v values to match the texture map size since u, v values are normalized. For sample_nearest, we merely get the texel that maps to this scaled u, v coordinate and return this color. This was done by rounding the scaled u, v values to the nearest integer. For sample_bilinear, however, we user linear interpolation to calculate the color by using a weighted blend of the nearest four texels neighboring. This was done using the following interpolation: </p>
+		
+		<pre>
+			Color c0 = (1-s)*(mip.get_texel(u00.x, u00.y)) + s*(mip.get_texel(u10.x, u10.y)); 
+			Color c1 = (1-s)*(mip.get_texel(u01.x, u01.y)) + s*(mip.get_texel(u11.x, u11.y)); 
+			return c0*(1-t) + c1*t;
+		</pre>	
+		<p>Here, we first we linearly interpolate the pair of texels with matching y coordinates and calculate the colors at these 2 points. Then, we interpolate along the y axis to merge these 2 colors into one. </p>
+
 
 		<h2>Task 6: "Level Sampling" with mipmaps for texture mapping</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
