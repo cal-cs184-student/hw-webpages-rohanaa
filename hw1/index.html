@@ -157,7 +157,7 @@
 			Barycentric coordinates are a set of coordinates used to represent a point inside a triangle using the triangle's three vertices as a reference. A point’s position is described as a weighted average of the vertices, where the weights (alpha, beta, gamma) sum to 1. These weights indicate how much influence each vertex has on the point’s location, allowing for easy interpolation of values like color or texture across the triangle. Within the triangle, these values sum up to one while outside, they do not. 
 		</p>
 		<figure>
-			<img src="task4-1.png" alt="task3" style="width:50%"/>
+			<img src="task4-2.png" alt="task3" style="width:50%"/>
 			<figcaption>Color Wheel!</figcaption>
 		</figure>
 		<figure>
@@ -214,34 +214,7 @@
 		
 		I started off by estimating the derivatives du/dx, du/dy, dv/dx, dv/dy. This was done using the method described in class, where we move a unit distance in both directions in pixel space and calculating the corresponding uv values. This can be done by interpolation using barycentric coordinates as explained in previous parts. Then, with these values, we calculate the norm to get the largest distance, representing the largest variation in texture space. Then, we take the log of it (base 2, since we perform 2x downsampling). This represents the mipmap level. We then interpolate accordingly, based on what method we're using (for both psm and lsm).
 	    </p>
-
-		<p>Images rasterized with different pixel and level sampling methods</p>
-		<div style="display: flex; flex-direction: column; align-items: center;">
-			<table style="width: 100%; text-align: center; border-collapse: collapse;">
-			  <tr>
-				<td style="text-align: center;">
-				  <img src="task5n-1.png" width="400px"/>
-				  <figcaption>sr=1,psm = n</figcaption>
-				</td>
-				<td style="text-align: center;">
-				  <img src="task5n-16.png" width="400px"/>
-				  <figcaption>sr=16,psm = n</figcaption>
-				</td>
-			  </tr>
-			  <tr>
-				<td style="text-align: center;">
-					<img src="task5b-1.png" width="400px"/>
-					<figcaption>sr = 1, psm = b</figcaption>
-				  </td>
-				<td style="text-align: center;">
-				  <img src="task5b-16.png" width="400px"/>
-				  <figcaption>sr = 16, psm = b</figcaption>
-				</td>
-			  </tr>
-			</table>
-		</div>
 	
-
 		<h2>Comparison</h2>
     
 		<h3>1. Pixel Sampling (Nearest vs. Bilinear)</h3>
@@ -264,6 +237,45 @@
 			<li><strong>Memory Usage:</strong> High, since multiple samples per pixel are stored and processed.</li>
 			<li><strong>Antialiasing Power:</strong> Provided really good antialiasing by averaging multiple samples.</li>
 		</ul>
+
+		<p>Images rasterized with different level and pixel sampling methods</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="l0pn.png" width="400px"/>
+				  <figcaption>L_ZERO and P_NEAREST</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="l0pl.png" width="400px"/>
+				  <figcaption>L_ZERO and P_LINEAR</figcaption>
+				</td>
+			  </tr>
+			  <tr>
+				<td style="text-align: center;">
+					<img src="lnpn.png" width="400px"/>
+					<figcaption>L_NEAREST and P_NEAREST</figcaption>
+				  </td>
+				<td style="text-align: center;">
+				  <img src="lnpl.png" width="400px"/>
+				  <figcaption>L_NEAREST and P_LINEAR</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+
+		<p>
+		L_ZERO + P_NEAREST: The star (highlighted in the pixel inspector) is blocky with sharp, pixelated edges. There's also no smoothing so individual pixels are individual.
+		</p>	
+		<p>
+		L_ZERO + P_LINEAR: The star appears less blocky and there's more pixel blending, making the image slightly smoother. However, it still looks patchy in some areas and lacks smoothing everywhere.
+		</p>		
+		<p>
+		L_NEAREST + P_NEAREST: The star, while less blocky than the first one, still appears very pixelated and rough in some areas. There isn't too much pixel blending.
+		</p>
+		<p>
+		L_NEAREST + P_LINEAR: The star is far less blocky and pixelated than the other images. the pixels blend in well together while still highlighting key details. 
+		</p>	
 
 		<h2>(Optional) Task 7: Extra Credit - Draw Something Creative!</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
