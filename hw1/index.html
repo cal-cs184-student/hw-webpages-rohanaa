@@ -99,29 +99,66 @@
 		</figure>
 		
 		<h2>Task 2: Antialiasing by Supersampling</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<body>
+			<h1>Supersampling Implementation</h1>
+		  
+			<h2>1. Sample Buffer Implementation</h2>
+			<p>
+			  My supersampling implementation involved using the <span class="small-bold">sample_buffer</span> directly rather than <span class="small-bold">fill_pixel</span>.
+			  I started by computing the ‘gap’ between each evenly spaced point, which I found out to be <span class="small-bold">1/(sqrt(sample_rate) + 1)</span>. 
+			  The number of sampling points in each row/column is <span class="small-bold">sqrt(sample_rate)</span>, since they are evenly spaced.
+			</p>
+			<p>
+			  After these values were computed, the rest of the work involved reshaping <span class="small-bold">sample_buffer</span> to always be of size <span class="small-bold">height*width*sample_rate</span> 
+			  (so other functions that involved resizing to only <span class="small-bold">width*height</span> had to be updated), since now each pixel has to be the average of all sample points, 
+			  of which there are <span class="small-bold">sample_rate</span> many. Therefore, one pixel is represented by <span class="small-bold">sample_rate</span> number of colors. 
+			</p>
+			<p>
+			  Further, if we are looking at the pixel (<span class="small-bold">x, y</span>) and want the (<span class="small-bold">i, j</span>) sample point within, we have to sample at (<span class="small-bold">x + i*gap, y + j*gap</span>). 
+			  Since <span class="small-bold">sample_buffer</span> is 1-dimensional, the index of this was computed as:
+			</p>
+			<pre>
+		  sample_buffer[(y*width + x)*sample_rate + num*(i-1) + (j-1)] = color;
+			</pre>
+		  
+			<h2>2. Algorithm and Pixel Update</h2>
+			<p>
+			  The algorithm simply goes through each sample point (through 4 for loops) as calculated above and does a check similar to task 1 to figure out whether the point is inside or outside the triangle. 
+			  Then, <span class="small-bold">sample_buffer</span> is updated. <span class="small-bold">Fill_pixel</span> had to be modified to set not just one location of <span class="small-bold">sample_buffer</span> to color, 
+			  but all samples of them (of which there are <span class="small-bold">sample_rate</span> many).
+			</p>
+		  
+			<h2>3. Resolving to Framebuffer</h2>
+			<p>
+			  In the <span class="small-bold">resolve_to_framebuffer</span> function, I calculate the final pixel color to be the average color of the <span class="small-bold">sample_rate</span> number of sample points 
+			  for that pixel in the sample buffer.
+			</p>
+		  
+			<h2>4. Effect of Supersampling</h2>
+			<p>
+			  Supersampling is really useful to remove jaggies and aliasing since we are effectively increasing the sample rate. This leads to much smoother and less pixelated images.
+			  It helped antialias the triangles by smoothing out the edges, blending them better with the white background, thereby removing jaggies and fixing pointy edges (and just edges in general) as well.
+			</p>
+		</body>
 		
-		<p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
+		<p>More triangles rasterized with different super sampling rates</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
 				<td style="text-align: center;">
-				  <img src="lion.jpg" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="task2-1.png" width="400px"/>
+				  <figcaption>sr=1; rendering is rough, and there are pixelated edges</figcaption>
 				</td>
 				<td style="text-align: center;">
-				  <img src="lion.jpg" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="task2-4.png" width="400px"/>
+				  <figcaption>sr = 4; jaggies less pronounced with a softening effect. 
+					There are lighter shades of purple, since we are averaging with some white pixels.</figcaption>
 				</td>
 			  </tr>
 			  <tr>
 				<td style="text-align: center;">
-				  <img src="lion.jpg" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-				<td style="text-align: center;">
-				  <img src="lion.jpg" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="task2-16.png" width="400px"/>
+				  <figcaption>sr = 16; similar to 4 but looks smoother since we’re sampling more points within the pixel. There’s more shades of purple and less jagged edges.</figcaption>
 				</td>
 			  </tr>
 			</table>
