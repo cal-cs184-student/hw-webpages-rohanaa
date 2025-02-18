@@ -176,7 +176,7 @@
 		</pre>	
 		<p>Here, we first we linearly interpolate the pair of texels with matching y coordinates and calculate the colors at these 2 points. Then, we interpolate along the y axis to merge these 2 colors into one. </p>
 
-		<p>More triangles rasterized with different super sampling rates</p>
+		<p>Images rasterized with different sampling rates and pixel sampling methods</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
@@ -209,7 +209,61 @@
 
 
 		<h2>Task 6: "Level Sampling" with mipmaps for texture mapping</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<p>
+		Level sampling is a technique used in texture mapping to determine the appropriate mipmap level to sample from based on the level of detail required. Instead of always sampling from the highest resolution texture, level sampling selects a mipmap level based on the rate of change of texture coordinates across pixels. If the texture is varying a lot with respect to the pixel, a higher mipmap level is used since this results in smoother patches and avoids high frequecy aliasing.
+		
+		I started off by estimating the derivatives du/dx, du/dy, dv/dx, dv/dy. This was done using the method described in class, where we move a unit distance in both directions in pixel space and calculating the corresponding uv values. This can be done by interpolation using barycentric coordinates as explained in previous parts. Then, with these values, we calculate the norm to get the largest distance, representing the largest variation in texture space. Then, we take the log of it (base 2, since we perform 2x downsampling). This represents the mipmap level. We then interpolate accordingly, based on what method we're using (for both psm and lsm).
+	    </p>
+
+		<p>Images rasterized with different pixel and level sampling methods</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="task5n-1.png" width="400px"/>
+				  <figcaption>sr=1,psm = n</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="task5n-16.png" width="400px"/>
+				  <figcaption>sr=16,psm = n</figcaption>
+				</td>
+			  </tr>
+			  <tr>
+				<td style="text-align: center;">
+					<img src="task5b-1.png" width="400px"/>
+					<figcaption>sr = 1, psm = b</figcaption>
+				  </td>
+				<td style="text-align: center;">
+				  <img src="task5b-16.png" width="400px"/>
+				  <figcaption>sr = 16, psm = b</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+	
+
+		<h2>Comparison</h2>
+    
+		<h3>1. Pixel Sampling (Nearest vs. Bilinear)</h3>
+		<ul>
+			<li><strong>Speed:</strong> Nearest sampling is the fastest since it fetches a single pixel. Bilinear is slower due to interpolation.</li>
+			<li><strong>Memory Usage:</strong> Not too much memory overhead compared to the others</li>
+			<li><strong>Antialiasing Power:</strong> Nearest sampling results in jaggies, while bilinear antialiases.</li>
+		</ul>
+		
+		<h3>2. Level Sampling (Mipmaps)</h3>
+		<ul>
+			<li><strong>Speed:</strong> Improves rendering speed since mipmaps are typically precomputed.</li>
+			<li><strong>Memory Usage:</strong> Increases memory usage since mipmaps store multiple texture resolutions.</li>
+			<li><strong>Antialiasing Power:</strong> Reduces aliasing in minified textures, avoiding aliasing and jaggies.</li>
+		</ul>
+		
+		<h3>3. Number of Samples Per Pixel (Super-Sampling)</h3>
+		<ul>
+			<li><strong>Speed:</strong> The slowest approach since this requires multipls samples per pixel.</li>
+			<li><strong>Memory Usage:</strong> High, since multiple samples per pixel are stored and processed.</li>
+			<li><strong>Antialiasing Power:</strong> Provided really good antialiasing by averaging multiple samples.</li>
+		</ul>
 
 		<h2>(Optional) Task 7: Extra Credit - Draw Something Creative!</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
