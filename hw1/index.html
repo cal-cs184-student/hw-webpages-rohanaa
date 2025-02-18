@@ -28,19 +28,19 @@
 	<body>
 		<div class="container">
 		<h1>CS184/284A Spring 2025 Homework 1 Write-Up</h1>
-		<div style="text-align: center;">Names: </div>
+		<div style="text-align: center;">Names: Rohan Aanegola</div>
 
 		<br>
 
-		Link to webpage: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+		Link to webpage: (TODO) <a href="https://cal-cs184-student.github.io/hw-webpages-rohanaa/hw1/index.html">cs184.eecs.berkeley.edu/sp25</a>
 		
 		<br>
 
-		Link to GitHub repository: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+		Link to GitHub repository: (TODO) <a href="https://github.com/cal-cs184-student/sp25-hw1-hoopers">cs184.eecs.berkeley.edu/sp25</a>
 
 		<figure>
-			<img src="lion.jpg" alt="Lion" style="width:50%"/>
-			<figcaption>You can add images with captions!</figcaption>
+			<img src="task1.jpg" alt="task1" style="width:50%"/>
+			<figcaption>Triangles!</figcaption>
 		</figure>
 
 		<!--
@@ -51,8 +51,19 @@
 		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
 
 		<h2>Task 1: Drawing Single-Color Triangles</h2>
+		1. We were given the coordinates of the 3 vertices of the triangle. However, these weren’t ordered in the anticlockwise direction (which is important while calculating whether a point is inside or outside the triangle). To fix this, I first calculated the cross product of the two vectors of the triangle (p1 - p0, p2 - p0). If it was negative, I swapped p0 and p1. This was done using the following calculations: 
+		if ((x1 - x0) * (y2 - y0) - (y1 - y0) * (x2 - x0) < 0) { swap(x1, x2); swap(y1, y2); }
+		Next, I had to calculate the tightest bounding box the triangle resided in. To do this, I calculated 4 things: the minimum x coordinate(xmin), the minimum y coordinate(ymin), the maximum x coordinate (xmax), and the maximum y coordinate (ymax). Then, the bounding box would be the triangle residing in the rectangle with diagonal vertices (xmin, ymin) and (xmax, ymax). Next, I just iterated through all points lying within the bounding box through a nested for loop, calculating whether the center of the point (using the 0.5, 0.5 offset) was within the triangle. This was done using the line formula: return -(x - x0)*(y1 - y0)+(y - y0)*(x1 -x0);
+		If it was within the triangle, I simply filled in the pixel at value (x, y) to color. 
+		
+		2. As mentioned above, my algorithm first calculated the tightest bounding box that fits the triangle (since all vertices lie on the edges of the bounding box). Then, I only iterate through the points that lie in this bounding box by setting my for loop conditions accordingly. 
+		
+		<img src="lion.jpg" width="400px"/>
+		<figcaption>Caption goes here.</figcaption>
+		
+		<h2>Task 2: Antialiasing by Supersampling</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
+		
 		<p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
@@ -78,9 +89,6 @@
 			  </tr>
 			</table>
 		</div>
-		
-		<h2>Task 2: Antialiasing by Supersampling</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 		<h2>Task 3: Transforms</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
