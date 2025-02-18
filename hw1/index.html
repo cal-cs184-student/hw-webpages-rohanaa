@@ -217,21 +217,21 @@
 	
 		<h2>Comparison</h2>
     
-		<h3>1. Pixel Sampling (Nearest vs. Bilinear)</h3>
+		<h3>1. Pixel Sampling</h3>
 		<ul>
 			<li><strong>Speed:</strong> Nearest sampling is the fastest since it fetches a single pixel. Bilinear is slower due to interpolation.</li>
 			<li><strong>Memory Usage:</strong> Not too much memory overhead compared to the others</li>
 			<li><strong>Antialiasing Power:</strong> Nearest sampling results in jaggies, while bilinear antialiases.</li>
 		</ul>
 		
-		<h3>2. Level Sampling (Mipmaps)</h3>
+		<h3>2. Level Sampling</h3>
 		<ul>
 			<li><strong>Speed:</strong> Improves rendering speed since mipmaps are typically precomputed.</li>
 			<li><strong>Memory Usage:</strong> Increases memory usage since mipmaps store multiple texture resolutions.</li>
 			<li><strong>Antialiasing Power:</strong> Reduces aliasing in minified textures, avoiding aliasing and jaggies.</li>
 		</ul>
 		
-		<h3>3. Number of Samples Per Pixel (Super-Sampling)</h3>
+		<h3>3. Number of Samples Per Pixel</h3>
 		<ul>
 			<li><strong>Speed:</strong> The slowest approach since this requires multipls samples per pixel.</li>
 			<li><strong>Memory Usage:</strong> High, since multiple samples per pixel are stored and processed.</li>
