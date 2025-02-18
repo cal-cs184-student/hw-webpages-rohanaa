@@ -119,7 +119,7 @@
 		
 		<h2>Task 2: Antialiasing by Supersampling</h2>
 			<p>
-			  My supersampling implementation involved using the <span class="small-bold">sample_buffer</span> directly rather than <span class="small-bold">fill_pixel</span>.
+			  Our supersampling implementation involved using the <span class="small-bold">sample_buffer</span> directly rather than <span class="small-bold">fill_pixel</span>.
 			  I started by computing the ‘gap’ between each evenly spaced point, which I found out to be <span class="small-bold">1/(sqrt(sample_rate) + 1)</span>. 
 			  The number of sampling points in each row/column is <span class="small-bold">sqrt(sample_rate)</span>, since they are evenly spaced.
 			</p>
@@ -195,8 +195,10 @@
 		</figure>
 
 		<h2>Task 5: "Pixel sampling" for texture mapping</h2>
+		<p>Pixel sampling is a method used to determine the color of a pixel when scaling (up or down) our image. While nearest neighbor sampling simply selects the color of the nearest texel, bilinear sampling interpolates between the four closest texels to smooth out colors.</p>
+		
 		<p>The task first involved converting x, y coordinates in the mesh to u, v coordinates in the texture map that we wanted. To do this, we use barycentric coordinates to interpolate the value at an x, y position within the triangle given the u, v coordinates of the vertices. With calculated u, v coordinates for the desired point (after clamping to ensure it’s between 0 and 1), calculating texel values was straightforward. </p>
-		<p>we scale our u, v values to match the texture map size since u, v values are normalized. For sample_nearest, we merely get the texel that maps to this scaled u, v coordinate and return this color. This was done by rounding the scaled u, v values to the nearest integer. For sample_bilinear, however, we user linear interpolation to calculate the color by using a weighted blend of the nearest four texels neighboring. This was done using the following interpolation: </p>
+		<p>We scale our u, v values to match the texture map size since u, v values are normalized. For sample_nearest, we merely get the texel that maps to this scaled u, v coordinate and return this color. This was done by rounding the scaled u, v values to the nearest integer. For sample_bilinear, however, we user linear interpolation to calculate the color by using a weighted blend of the nearest four texels neighboring. This was done using the following interpolation: </p>
 		
 		<pre>
 			Color c0 = (1-s)*(mip.get_texel(u00.x, u00.y)) + s*(mip.get_texel(u10.x, u10.y)); 
