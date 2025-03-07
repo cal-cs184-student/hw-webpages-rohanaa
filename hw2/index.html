@@ -32,16 +32,11 @@
 
 		<br>
 
-		Link to webpage: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+		Link to webpage: (TODO) <a href="https://cal-cs184-student.github.io/hw-webpages-rohanaa/hw2/index.html">https://cal-cs184-student.github.io/hw-webpages-rohanaa/hw2/index.html</a>
 
 		<br>
 		
-		Link to GitHub repository: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
-
-		<figure>
-			<img src="teapot.png" alt="Teapot" style="width:50%"/>
-			<figcaption>You can add images with captions!</figcaption>
-		</figure>
+		Link to GitHub repository: (TODO) <a href="https://github.com/cal-cs184-student/sp25-hw2-hooperss">https://github.com/cal-cs184-student/sp25-hw2-hooperss</a>
 
 		<!--
 		We've already added one heading per part, to make your write-up as navigable when grading. Please fit your write-up within these sections!
@@ -102,35 +97,149 @@
 		</div>
 
 		<h3>Part 2: Bezier surfaces with separable 1D de Casteljau</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<p>
+		The de Casteljau algorithm naturally extends to 2d surfaces with 2 parameters, u and v. In this case, we have a 2d array of control points that define our curve. Conceptually, given an nxn grid of control points,  the 2d version of the algorithm attempts to draw n different curves, each having n points. Then using the 1d bezier curve algorithm discussed above with parameter u, we obtain n different points, 1 for each curve. Finally, we use the same algorithm for these n points calculated to calculate a single point using the parameter v. This is the point corresponding to the control point set and the parameters u and v. Now, varying u and v between 0 and 1 independently, we can get multiple points on the bezier surface.
+		</p>
+		<figure>
+			<img src="hw2t2.1.png" width="400px"/>
+			<figcaption>teapot.bez</figcaption>
+		</figure>
+
 
 		<h2>Section II: Triangle Meshes and Half-Edge Data Structure</h2>
 
 		<h3>Part 3: Area-weighted vertex normals</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<p>
+			The first thing I wanted to do was traverse the faces that neighbored the vertex using the half-edge datastructure. To do this, I used a simple do while loop as recommended in the hw spec, setting h = h->twin()->next() after every iteration, breaking when h = start (the initial half edge). 
+
+			We then initialize our final normal vector to (0, 0, 0).
+			Next, given the half-edge corresponding to a particular face of a triangle,  I got all of its vertex positions since I had to calculate two vectors. More formally, given v0, v1, and v2, I calculated e1 and e2 to be v1-v0 and v2-v0. These are the two vectors corresponding to the triangle with which we can calculate the cross product. The cross product is useful since it gives us the area of the face (which is half of the norm of the cross product) and the unit normal to the corresponding face (which is the unit cross product). We then add the weighted normal (multiplying the area of the face with the unit normal). 
+			After doing this for all faces, we finally return the unit version of the normal.
+		</p>
+		<figure>
+			<img src="hw2t3.1.png" width="400px"/>
+			<figcaption>without vertex normals</figcaption>
+		</figure>
+		<figure>
+			<img src="hw2t3.2.png" width="400px"/>
+			<figcaption>with vertex normals</figcaption>
+		</figure>
+
 
 		<h3>Part 4: Edge flip</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+			<p>My edge flip algorithm was easy to implement after coming up with a descriptive figure. It started with drawing out all half-edges, vertices, faces, and edges present in the two triangles (including twin edges). Then, I redrew the 2 triangles after the edge flip, keeping note of the movement of all the parameters. After that, it came down to simply implementing this in code, which was straightforward since I had to simply reassign some pointer values.</p>
+			
+			<h4>Debugging Process</h4>
+			<p>The debugging process was cumbersome since I thought everything was working fine till I implemented part 6 and noticed bugs. Initially, I thought I could do it without drawing anything (I also fractured my arm so couldn’t really draw with a pen for a week). Because of this, I didn’t conceptualize the shifting edges correctly and ran into several problems, some of which are:</p>
+			
+			<ul>
+				<li><strong>The importance of twin edges:</strong> I left the exterior twin edges unchanged for a long time, thinking they would stay the same. It was only after drawing the diagram that I realized that their twin edges would change.</li>
+				<li><strong>The importance of labeling:</strong> Initially, I labeled with letters indicating the edge, e.g., hAB for the half-edge AB. To keep it consistent, I created a new edge eAD and set it equal to eBC as an interim value (for conceptual clarity). While it made sense while looking at the code, it led to an oversimplification of the problem and led to a lot of incorrect pointer assignments.</li>
+			</ul>
+			
+			<p>However, after drawing the diagram, coding it up was quite straightforward.</p>
+
+			<figure>
+				<img src="hw2t4.1.png" width="400px"/>
+				<figcaption>before edge flips</figcaption>
+			</figure>
+			<figure>
+				<img src="hw2t4.2.png" width="400px"/>
+				<figcaption>after edge flips</figcaption>
+			</figure>
 
 		<h3>Part 5: Edge split</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<p>Task 5 was similar to task 4 in that it was quite straightforward to implement after drawing a labeled figure to keep track of which half-edges, vertices, edges, and faces went where. Attached is the drawing of the edge flip, where I labeled all important parameters before and after the edge flip. After drawing this, it simply came down to reassigning some pointer values, which was straightforward.</p>
+
+		<p>However, the debugging process was cumbersome in this case as well, since I was only able to spot the bug after implementing task 6. As before, I initially did not (and could not, due to my arm) draw a diagram but just looked at the images of the edge split on the course website and tried to understand where each half-edge, vertex, etc., went. Furthermore, I also forgot to update twin edges like in the previous task, which only became clear to me after drawing everything out. Similarly, my naming convention was conceptually simple as before but led to a lot of incorrect pointer assignments.</p>
+
+		<p>However, after drawing things out, everything made sense.</p>
+
+		<figure>
+			<img src="hw2t5.3.png" width="400px"/>
+			<figcaption>edge split drawings</figcaption>
+		</figure>
+		<figure>
+			<img src="hw2t5.1.png" width="400px"/>
+			<figcaption>edge splits</figcaption>
+		</figure>
+		<figure>
+			<img src="hw2t5.2.png" width="400px"/>
+			<figcaption>edge flips and splits</figcaption>
+		</figure>
 
 		<h3>Part 6: Loop subdivision for mesh upsampling</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<p>The general algorithm for task 6 was easy to implement given the hints.</p>
+		<p>The first step was to set the <code>newPosition</code> parameter of each old vertex. To do this, I first had to calculate the position of each neighboring vertex and add them all up. Further, I had to use the degree (<code>n</code>) to calculate the value of <code>u</code>. Each old vertex’s <code>newPosition</code> was set to <code>(1 - n * u) * v->position + u * sumN</code> as mentioned in the hint.</p>
+		<p>Next, I had to set the new vertex positions. This was done by going through each original edge, getting the four vertex positions relevant (the four vertices <code>a, b, c, d</code> in the two triangles <code>(a, b, c)</code> and <code>(b, c, d)</code> while looking at the edge <code>bc</code>, for example). Then, I weighted the direct vertices by <code>3/8</code> and the other two vertices by <code>1/8</code>.</p>
+		<p>Next, I went through a list of original edges to split each one. I had to create a separate list to ensure I didn’t split an already split/new edge. Next, as mentioned in the hints, I went through all the edges and for all new ones, if exactly one of its direct vertices was new, I flipped the edge.</p>
+		<p>Finally, I went through all vertices to set the position to be equal to <code>newPosition</code>.</p>
+		<p>However, this wasn’t sufficient as nothing was rendering. After some debugging, I figured I never set the <code>isNew</code> parameter to <code>true</code> or <code>false</code> anywhere. After referring to the hints again, I realized that in edge split, I had to set two edges' <code>isNew</code> parameter to <code>True</code> and the other two to <code>False</code> (In the diagram for task 5, the two horizontal edges are new and the two vertical ones are not). Then, I had to make sure that all edges that already existed were not considered new. I did this in the code for task 6 where I iterated through all vertices and edges. In these loops, I simply set <code>v->isNew</code> and <code>e->isNew</code> to <code>False</code>.</p>
+		
+		<figure>
+			<img src="hw2t6.1.png" width="400px"/>
+			<figcaption>0 loop subdivisions</figcaption>
+		</figure>
+		<figure>
+			<img src="hw2t6.2.png" width="400px"/>
+			<figcaption>1 subdivision</figcaption>
+		</figure>
+		<figure>
+			<img src="hw2t6.3.png" width="400px"/>
+			<figcaption>2 subdivisions</figcaption>
+		</figure>
+		<p>Here the subdivision increases the number of triangles, making each one smaller and therefore adding more detail. Further, all boundaries are much smoother since we have smaller triangles for fine-grained details. While the image of the cow with 0 subdivisions looks quite coarse the one with 3 subdivisions looks like much smoother, with smoother curves and boundaries.
+			Further, it is possible to smoothen the object by pre-splitting edges at the boundaries. Since we create more triangles in these regions, we can get smoother edges and corners. 
+		</p>
 
-		<h2>(Optional) Section III: Potential Extra Credit - Art Competition: Model something Creative</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<p>Images of the cube after subdivisions. Here, we can notice that there is some evident asymmetry on each face.</p>
+		<figure>
+			<img src="hw2t6.8.png" width="400px"/>
+			<figcaption>0 loop subdivisions</figcaption>
+		</figure>
+		<figure>
+			<img src="hw2t6.9.png" width="400px"/>
+			<figcaption>1 subdivision</figcaption>
+		</figure>
+		<figure>
+			<img src="hw2t6.10.png" width="400px"/>
+			<figcaption>2 subdivisions</figcaption>
+		</figure>
+		<figure>
+			<img src="hw2t6.11.png" width="400px"/>
+			<figcaption>3 loop subdivisions</figcaption>
+		</figure>
 
-		<h2>Additional Notes (please remove)</h2>
+		<p>I performed edge splits on each face of the cube to make all faces symmetric (unlike before). The results:</p>
+		<figure>
+			<img src="hw2t6.4.png" width="400px"/>
+			<figcaption>0 loop subdivisions</figcaption>
+		</figure>
+		<figure>
+			<img src="hw2t6.5.png" width="400px"/>
+			<figcaption>1 subdivision</figcaption>
+		</figure>
+		<figure>
+			<img src="hw2t6.6.png" width="400px"/>
+			<figcaption>2 subdivisions</figcaption>
+		</figure>
+		<figure>
+			<img src="hw2t6.7.png" width="400px"/>
+			<figcaption>3 loop subdivisions</figcaption>
+		</figure>
+		<p>This mesh is more symmetric than the previous one. Further, since I pre-split some edges, it's clear that this mesh is slightly more round and smooth than the previous cube mesh.</p>
+		<p>The asymmetry occurs due to the following reasons:</p>
 		<ul>
-			<li>You can also add code if you'd like as so: <code>code code code</code></li>
-			<li>If you'd like to add math equations, 
-				<ul>
-					<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
-					<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
-				</ul>
+			<li>
+				<strong>The initial mesh is asymmetric.</strong> Since each face has a single diagonal edge, 
+				it’s not symmetric across each face and therefore leads to irregularities during subdivision. By splitting the edge, we get symmetric faces which stay symmetric even after subdivision in this case.
+			</li>
+			<li>
+				<strong>Vertex valence deviation.</strong> The ideal valence for each vertex is around 6. However, due to only a 
+				single diagonal edge, the valence of some of these vertices is lower than 6. As a result, while subdividing, 
+				we get irregularities. By splitting the edge, we get vertices of higher valence and therefore achieve more regularity.
 			</li>
 		</ul>
-		</div>
+	</div>
 	</body>
 </html>
