@@ -81,7 +81,7 @@
 			</div>
 		
 		<h2>Part 2: Bounding Volume Hierarchy</h2>
-			<p>My BVH algorithm uses the centroid heuristic to determine the splitting point. First, I calculate two bounding boxes: one for the primitives and one for their centroids. The primitive box expands to include each shape, while the centroid box expands to include the centroids of each primitive’s bounding box. If the number of primitives is ≤ <code>max_leaf_size</code>, I return a leaf node. Otherwise, I determine the longest axis of the centroid box and split at the midpoint, partitioning primitives accordingly. I used GPT to refine the partitioning syntax. Recursively, I call <code>construct_bvh</code> on both partitions to form a binary tree structure, finally returning the root.</p>
+			<p>My BVH algorithm uses the centroid heuristic to determine the splitting point. First, I calculate two bounding boxes: one for the primitives and one for their centroids. The primitive box expands to include each shape, while the centroid box expands to include the centroids of each primitive’s bounding box. If the number of primitives is ≤ <code>max_leaf_size</code>, I return a leaf node. Otherwise, I determine the longest axis of the centroid box and split at the midpoint, partitioning primitives accordingly. Recursively, I call <code>construct_bvh</code> on both partitions to form a binary tree structure, finally returning the root.</p>
 			<div style="display: flex; flex-direction: column; align-items: center;">
 				<table style="width: 100%; text-align: center; border-collapse: collapse;">
 				<tr>
